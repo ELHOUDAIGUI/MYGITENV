@@ -1,0 +1,40 @@
+<project default="all">
+  <property name="tst-dir" location="test" />
+  <property name="TALK" value="true" />
+
+  <path id="classpath.base">
+  </path>
+  <path id="classpath.test">
+              <pathelement location="lib/junit-4.10.jar"/>
+              <pathelement path="lib/selenium-server-standalone-2.47.1.jar"/>
+              <pathelement path="test"/>
+    <pathelement location="${tst-dir}" />
+    <path refid="classpath.base" />
+  </path>
+
+  <target name="compile-test">
+    <javac srcdir="${tst-dir}"
+           verbose="${TALK}"
+           >
+      <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+  <target name="clean-compile-test">
+    <delete verbose="${TALK}">
+      <fileset dir="${tst-dir}" includes="**/*.class" />
+    </delete>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <junit>
+      <classpath refid="classpath.test" />
+      <formatter type="brief" usefile="false" />
+       <test name="SmokeTest" todir="test-reports">
+            <formatter type="xml"/>
+        </test>
+    </junit>
+  </target>
+
+  <target name="all" depends="test" />
+  <target name="clean" depends="clean-compile-test" />
+</project>
